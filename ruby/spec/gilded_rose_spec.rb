@@ -1,5 +1,3 @@
-# require File.join(File.dirname(__FILE__), 'gilded_rose')
-
 require 'gilded_rose'
 
 describe GildedRose do
@@ -131,6 +129,20 @@ describe GildedRose do
             GildedRose.new(items).update_quality
           end
           expect(items[0].quality).to eq 4
+        end
+      end
+    end
+
+    context "Added many items to a list" do
+      describe "Many items" do
+        let(:aged_brie) { Item.new("Aged Brie", 2, 2) }
+        let(:conjured) { Item.new("Conjured", 3, 8) }
+        let(:item) { Item.new("Item", 3, 8) }
+
+        it 'can show all of the items' do
+          items = [aged_brie, conjured, item]
+          GildedRose.new(items).update_quality
+          expect(items[1].quality).to eq 6
         end
       end
     end
