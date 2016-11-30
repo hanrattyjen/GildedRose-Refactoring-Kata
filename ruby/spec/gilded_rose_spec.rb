@@ -7,7 +7,7 @@ describe GildedRose do
   subject(:gilded_rose) { described_class.new(item) }
   let(:item) { Item.new("Item", 3, 6) }
   let(:low_quality_item) { Item.new("Crap", 2, 1) }
-
+  let(:aged_brie) { Item.new("Aged Brie", 2, 2) }
   let(:sulfuras) { Item.new("Sulfuras, Hand of Ragnaros", 10, 10) }
 
   describe '#update_quality' do
@@ -15,25 +15,6 @@ describe GildedRose do
       items = [item]
       GildedRose.new(items).update_quality
       expect(items[0].name).to eq 'Item'
-    end
-
-    describe 'Sulfuras' do
-      it 'does not lose it\'s Quality' do
-        items = [sulfuras]
-        2.times do
-          GildedRose.new(items).update_quality
-        end
-        expect(items[0].quality).to eq 10
-      end
-
-      it 'does not lose it\'s Sellin value' do
-        items = [sulfuras]
-        2.times do
-          GildedRose.new(items).update_quality
-        end
-        # GildedRose.new(items).update_quality
-        expect(items[0].sell_in).to eq 10
-      end
     end
 
     context 'Once the sell by date has passed, Quality degrades twice as fast' do
@@ -55,6 +36,40 @@ describe GildedRose do
         expect(items[0].quality).to eq 0
       end
     end
+
+    context 'Aged Brie increases in quality the older it gets' do
+      describe 'Aged Brie' do
+        it 'increases in quality' do
+          items = [aged_brie]
+          2.times do
+            GildedRose.new(items).update_quality
+          end
+          expect(items[0].quality).to eq 4
+        end
+      end
+    end
+
+    context 'Sulfuras never has to be sold or decreases in Quality' do
+      describe 'Sulfuras' do
+        it 'does not lose it\'s Quality' do
+          items = [sulfuras]
+          2.times do
+            GildedRose.new(items).update_quality
+          end
+          expect(items[0].quality).to eq 10
+        end
+
+        it 'does not lose it\'s Sellin value' do
+          items = [sulfuras]
+          2.times do
+            GildedRose.new(items).update_quality
+          end
+          # GildedRose.new(items).update_quality
+          expect(items[0].sell_in).to eq 10
+        end
+      end
+    end
+
   end
 
 end
