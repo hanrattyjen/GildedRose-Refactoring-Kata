@@ -7,7 +7,7 @@ describe GildedRose do
   subject(:gilded_rose) { described_class.new(item) }
 
   describe '#update_quality' do
-    let(:item) { Item.new("Item", 3, 6) }
+    let(:item) { Item.new("Item", 3, 8) }
 
     it 'does not change the name' do
       items = [item]
@@ -18,7 +18,7 @@ describe GildedRose do
     context 'Once the sell by date has passed, Quality degrades twice as fast' do
       it 'Random item has a quality that will decrease twice as fast' do
         items = [item]
-        4.times do
+        5.times do
           GildedRose.new(items).update_quality # gives quality = 5, days=2
         end
         expect(items[0].quality).to eq 1
@@ -33,7 +33,7 @@ describe GildedRose do
         2.times do
           GildedRose.new(items).update_quality
         end
-        expect(items[0].quality).to eq 0
+        expect{ GildedRose.new(items).update_quality }.to raise_error "Quality minimum has been reached"
       end
     end
 
@@ -87,7 +87,7 @@ describe GildedRose do
 
     context 'Backstage passes increase in quality' do
       describe 'Backstage passes' do
-        let(:backstage) { Item.new("Backstage passes", 12, 6) }
+        let(:backstage) { Item.new("Backstage passes to a TAFKAL80ETC concert", 12, 6) }
 
         it 'increases in value as Sellin value approaches' do
           items = [backstage]
@@ -96,15 +96,29 @@ describe GildedRose do
         end
 
         it 'increases in value by 2 when there are <= 10 Sellin days left' do
-
+          items = [backstage]
+          4.times do
+            GildedRose.new(items).update_quality
+          end
+          expect(items[0].quality).to eq 13
         end
 
-        it 'increases in value by 3 when there are <= 10 Sellin dats left' do
-
+        it 'increases in value by 3 when there are <= 5 Sellin days left' do
+          items = [backstage]
+          8.times do
+            GildedRose.new(items).update_quality
+          end
+          expect(items[0].quality).to eq 21
         end
 
         it 'has a quality that drops to zero after the concert' do
-
+          items = [backstage]
+          12.times do
+            GildedRose.new(items).update_quality
+          end
+          puts items[0].quality
+          puts items[0].sell_in
+          expect(items[0].quality).to eq 0
         end
        end
     end

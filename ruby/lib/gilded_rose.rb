@@ -10,55 +10,28 @@ class GildedRose
     @items.each do |item|
       if item.quality > 50
         fail "Quality maximum has been reached"
+      elsif item.quality < 0
+        fail "Quality minimum has been reached"
       else
-        # Aged Brie and backstage passes increase in quality the older it gets
-        if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
-          if item.quality > 0
-            # Sulfuras legendary item, never has to be sold or decrease in quality
-            if item.name != "Sulfuras, Hand of Ragnaros"
-              item.quality = item.quality - 1
-            end
+        item.sell_in -= 1
+        case item.name
+        when "Aged Brie"
+          item.sell_in >= 0 ? item.quality += 1 : item.quality
+        when "Sulfuras, Hand of Ragnaros"
+          item.quality
+          item.sell_in += 1
+        when "Backstage passes to a TAFKAL80ETC concert"
+          if item.sell_in > 10
+            item.quality += 1
+          elsif item.sell_in <= 10
+            item.quality += 2
+          elsif item.sell_in <= 5
+            item.quality += 3
+          elsif item.sell_in <= 0
+            item.quality == 0
           end
         else
-          if item.quality < 50
-            item.quality = item.quality + 1
-            # Backstage passes increases in quality as its Sellin value approaches
-            if item.name == "Backstage passes to a TAFKAL80ETC concert"
-              # Quality increases by 2 when < 11 days left
-              if item.sell_in < 11
-                if item.quality < 50
-                  item.quality = item.quality + 1
-                end
-              end
-              if item.sell_in < 6
-                if item.quality < 50
-                  # Quality increases by 3 when there are < 6 days left
-                  item.quality = item.quality + 1
-                end
-              end
-            end
-          end
-        end
-        if item.name != "Sulfuras, Hand of Ragnaros"
-          item.sell_in = item.sell_in - 1
-        end
-        if item.sell_in < 0 # i.e sell by date has pased - quality degrades twice as fast
-          if item.name != "Aged Brie"
-            if item.name != "Backstage passes to a TAFKAL80ETC concert"
-              if item.quality > 0
-                if item.name != "Sulfuras, Hand of Ragnaros"
-                  item.quality = item.quality - 1
-                end
-              end
-            else
-              item.quality = item.quality - item.quality
-            end
-          else
-            # if item.name = "Aged Brie"
-            if item.quality < 50
-              item.quality = item.quality + 1
-            end
-          end
+          item.sell_in >= 0 ? item.quality -= 1 : item.quality -= 2
         end
       end
     end
