@@ -1,3 +1,5 @@
+require 'item'
+
 class GildedRose
 
   def initialize(items)
@@ -8,6 +10,7 @@ class GildedRose
     @items.each do |item|
       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
         if item.quality > 0
+          # Sulfuras legendary item, never has to be sold or decrease in quality
           if item.name != "Sulfuras, Hand of Ragnaros"
             item.quality = item.quality - 1
           end
@@ -15,7 +18,9 @@ class GildedRose
       else
         if item.quality < 50
           item.quality = item.quality + 1
+          # Backstage passes increases in quality as its Sellin value approaches
           if item.name == "Backstage passes to a TAFKAL80ETC concert"
+            # Quality increases by 2 when < 11 days left
             if item.sell_in < 11
               if item.quality < 50
                 item.quality = item.quality + 1
@@ -23,6 +28,7 @@ class GildedRose
             end
             if item.sell_in < 6
               if item.quality < 50
+                # Quality increases by 3 when there are < 6 days left
                 item.quality = item.quality + 1
               end
             end
@@ -50,19 +56,5 @@ class GildedRose
         end
       end
     end
-  end
-end
-
-class Item
-  attr_accessor :name, :sell_in, :quality
-
-  def initialize(name, sell_in, quality)
-    @name = name
-    @sell_in = sell_in
-    @quality = quality
-  end
-
-  def to_s()
-    "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
