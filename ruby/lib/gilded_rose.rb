@@ -8,6 +8,7 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
+      # Aged Brie and backstage passes increase in quality the older it gets
       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
         if item.quality > 0
           # Sulfuras legendary item, never has to be sold or decrease in quality
@@ -38,7 +39,7 @@ class GildedRose
       if item.name != "Sulfuras, Hand of Ragnaros"
         item.sell_in = item.sell_in - 1
       end
-      if item.sell_in < 0
+      if item.sell_in < 0 # i.e sell by date has pased - quality degrades twice as fast
         if item.name != "Aged Brie"
           if item.name != "Backstage passes to a TAFKAL80ETC concert"
             if item.quality > 0
@@ -50,6 +51,7 @@ class GildedRose
             item.quality = item.quality - item.quality
           end
         else
+          # if item.name = "Aged Brie"
           if item.quality < 50
             item.quality = item.quality + 1
           end
