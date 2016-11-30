@@ -7,6 +7,7 @@ describe GildedRose do
   subject(:gilded_rose) { described_class.new(item) }
   let(:item) { Item.new("Item", 3, 6) }
   let(:low_quality_item) { Item.new("Crap", 2, 1) }
+  let(:old_item) { Item.new("Old", 3, 52) }
   let(:aged_brie) { Item.new("Aged Brie", 2, 2) }
   let(:sulfuras) { Item.new("Sulfuras, Hand of Ragnaros", 10, 10) }
 
@@ -45,6 +46,15 @@ describe GildedRose do
             GildedRose.new(items).update_quality
           end
           expect(items[0].quality).to eq 4
+        end
+      end
+    end
+
+    context 'The quality of an item is never more than 50' do
+      describe 'Older items' do
+        it 'cannnot have quality more than 50' do
+          items = [old_item]
+          expect{GildedRose.new(items).update_quality}.to raise_error "Quality maximum has been reached"
         end
       end
     end
