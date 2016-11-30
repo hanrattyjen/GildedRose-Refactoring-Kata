@@ -116,8 +116,6 @@ describe GildedRose do
           12.times do
             GildedRose.new(items).update_quality
           end
-          puts items[0].quality
-          puts items[0].sell_in
           expect(items[0].quality).to eq 0
         end
       end
