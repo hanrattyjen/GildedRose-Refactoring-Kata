@@ -120,7 +120,21 @@ describe GildedRose do
           puts items[0].sell_in
           expect(items[0].quality).to eq 0
         end
-       end
+      end
+    end
+
+    context "Conjured items decrease in quality twice as fast as normal ones" do
+      describe "Conjured items" do
+        let(:conjured) { Item.new("Conjured", 3, 8) }
+
+        it 'has a quality that decreases twice as fast as normal items' do
+          items = [conjured]
+          2.times do
+            GildedRose.new(items).update_quality
+          end
+          expect(items[0].quality).to eq 4
+        end
+      end
     end
 
   end

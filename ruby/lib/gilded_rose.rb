@@ -20,6 +20,8 @@ class GildedRose
         when "Sulfuras, Hand of Ragnaros"
           item.quality
           item.sell_in += 1
+        when "Conjured"
+          item.quality -= 2
         when "Backstage passes to a TAFKAL80ETC concert"
           if item.sell_in > 10
             item.quality += 1
