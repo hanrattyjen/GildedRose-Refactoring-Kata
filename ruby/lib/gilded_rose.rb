@@ -25,12 +25,12 @@ class GildedRose
         when "Backstage passes to a TAFKAL80ETC concert"
           if item.sell_in > 10
             item.quality += 1
-          elsif item.sell_in <= 10
+          elsif item.sell_in <= 10 && item.sell_in > 5
             item.quality += 2
-          elsif item.sell_in <= 5
+          elsif item.sell_in <= 5 && item.sell_in >= 0
             item.quality += 3
-          elsif item.sell_in <= 0
-            item.quality == 0
+          elsif item.sell_in < 0
+            item.quality = 0
           end
         else
           item.sell_in >= 0 ? item.quality -= 1 : item.quality -= 2

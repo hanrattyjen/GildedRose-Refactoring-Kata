@@ -106,12 +106,12 @@ describe GildedRose do
           8.times do
             GildedRose.new(items).update_quality
           end
-          expect(items[0].quality).to eq 21
+          expect(items[0].quality).to eq 23
         end
 
         it 'has a quality that drops to zero after the concert' do
           items = [backstage]
-          12.times do
+          14.times do
             GildedRose.new(items).update_quality
           end
           expect(items[0].quality).to eq 0
