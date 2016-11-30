@@ -16,10 +16,16 @@ describe GildedRose do
     end
 
     describe 'Sulfuras' do
-      it 'does not lose it\s Sellin value or Quality' do
+      it 'does not lose it\'s Quality' do
         items = [sulfuras]
         GildedRose.new(items).update_quality
         expect(items[0].quality).to eq 10
+      end
+
+      it 'does not lose it\'s Sellin value' do
+        items = [sulfuras]
+        GildedRose.new(items).update_quality
+        expect(items[0].sell_in).to eq 10
       end
     end
   end
